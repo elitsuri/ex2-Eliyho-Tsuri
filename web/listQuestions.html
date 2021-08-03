@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function()
+    {
+      $.ajax({
+        url: "LoadQuestions", contentType: "text/plain; charset=UTF-8",
+        success: function (result)
+        {
+          console.log("resultLoadQuestions: ", result);
+          document.body.innerHTML=result;
+        },
+      });
+      //-----------------------------------------------------------
+    });
+  </script>
+  <script>
+    function myfunction(key)
+    {
+      if ($("#divAnswers"+key).is(":hidden"))
+      {
+        $("#divAnswers"+key).show();
+        $("#show"+key).html("Hidden Answers");
+        $.ajax({
+          url: "JsonAnswers", contentType: "application/json; charset=UTF-8",
+          data: {
+            Number : key,
+          },
+          success: function (result)
+          {
+            var res = "<p>" + result.idQ + ". ";
+            res += "Name: " + result.name + "  Answer: ";
+            res += result.theAnswer + "</p>";
+            document.getElementById("divAnswers"+key).innerHTML = res;
+          }
+        });
+      } else {
+        $("#divAnswers"+key).hide();
+        $("#show"+key).html("Show Answers");
+      }
+    }
+  </script>
+</head>
+<body>
+<hr>
+<div>
+</div>
+<div id="allQuestions">
+</div>
